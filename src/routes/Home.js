@@ -77,6 +77,7 @@ const Home = () => {
             id={m.id}
             isLiked={m.isLiked}
             bg={m.medium_cover_image}
+            sug={false}
           />
         ))}
       </Movies>

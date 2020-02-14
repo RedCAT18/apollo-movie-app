@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
 
+import Movie from '../components/Movie';
+
 const GET_MOVIE = gql`
   query getMovie($id: Int!) {
     movie(id: $id) {
@@ -53,6 +55,7 @@ const Description = styled.p`
   font-weight: 100;
   line-height: 1.1;
   text-indent: 20px;
+  margin-bottom: 30px;
 `;
 
 const Poster = styled.div`
@@ -66,11 +69,18 @@ const Poster = styled.div`
   background-position: center center;
 `;
 
+const Suggestions = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+`;
+
 const Detail = () => {
   const { id } = useParams();
   const { loading, data } = useQuery(GET_MOVIE, {
     variables: { id: parseInt(id) }
   });
+  console.log(data);
   return (
     <Container>
       <Column>
@@ -83,6 +93,12 @@ const Detail = () => {
           {data?.movie?.language} {data?.movie?.rating}
         </Subtitle>
         <Description>{data?.movie?.description_intro}</Description>
+        <Subtitle>{data?.suggestions ? 'Suggestions' : ''}</Subtitle>
+        <Suggestions>
+          {data?.suggestions?.map(s => (
+            <Movie id={s.id} key={s.id} bg={s.medium_cover_image} sug={true} />
+          ))}
+        </Suggestions>
       </Column>
       <Poster bg={data?.movie?.medium_cover_image}></Poster>
     </Container>

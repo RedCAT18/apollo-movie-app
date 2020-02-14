@@ -16,6 +16,8 @@ const Container = styled.div`
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   border-radius: 7px;
   background-color: transparent;
+  margin-bottom: 20px;
+  position: relative;
 `;
 
 const Poster = styled.div`
@@ -27,9 +29,17 @@ const Poster = styled.div`
   border-radius: 7px;
 `;
 
-const Button = styled.button``;
+const Button = styled.button`
+  width: 60px;
+  height: 25px;
+  background-color: white;
+  border: 1px solid gray;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+`;
 
-export default ({ id, bg, isLiked }) => {
+export default ({ id, bg, isLiked, sug }) => {
   const [toggleLikeMovie] = useMutation(TOGGLE_LIKE_MOVIE, {
     variables: { id: parseInt(id), isLiked }
   });
@@ -39,7 +49,13 @@ export default ({ id, bg, isLiked }) => {
         <Link to={`/${id}`}>
           <Poster bg={bg} />
         </Link>
-        <Button onClick={toggleLikeMovie}>{isLiked ? 'Unlike' : 'Like'}</Button>
+        {sug ? (
+          ''
+        ) : (
+          <Button onClick={toggleLikeMovie}>
+            {isLiked ? 'Unlike' : 'Like'}
+          </Button>
+        )}
       </Container>
     </>
   );
